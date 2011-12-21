@@ -1,0 +1,24 @@
+////////////////////////////
+// Natural Selection      //
+//   by Charlie Cleveland //
+////////////////////////////
+game "Natural Selection"
+developer "Unknown Worlds"
+developer_url "http://www.unknownworlds.com/ns/"
+url_info "http://www.unknownworlds.com/ns/"
+url_dl "http://www.unknownworlds.com/ns/view?action=files"
+icon "ns"
+version "v3.2"
+size "165000000"
+svonly "0"
+secure "0"
+cldll "cl_dlls\client.dll"
+hlversion "1110"
+type "multiplayer_only"
+nomodels "1"
+nohimodel "1"
+mpentity "info_mapinfo"
+//gamedll "dlls\ns.dll"
+gamedll "addons\metamod\dlls\metamod.dll"
+//gamedll_linux "dlls/ns_i386.so"
+gamedll_linux "addons/metamod/dlls/metamod_i386.so"

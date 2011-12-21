@@ -1,0 +1,186 @@
+  ________________________________
+ [                                ]
+ [  ENSL Server Package	v1.2      ]
+ [   Modified: 28th Sep 2011      ]
+ [________________________________]
+
+
+This is a server configuration package for ENSL server hosters.
+
+--------------------------------------------------------------------------------------------
+============================================================================================
+--------------------------------------------------------------------------------------------
+
+Package includes:
+
+ - Metamod-P 1.19p32
+ - AmxModX 1.8.1
+ - ENSL Server Plugin 1.3
+ - ENSL Icons
+ - Non-standard ENSL official maps
+ - Example configurations
+
+--------------------------------------------------------------------------------------------
+============================================================================================
+--------------------------------------------------------------------------------------------
+
+Requirements:
+
+1. Steam-based Half-life Dedicated Server
+
+2. Natural Selection 3.2 server
+   ( HLDS/NS-server Setup Guides: http://www.vadakill.com/nsguides )
+
+--------------------------------------------------------------------------------------------
+============================================================================================
+--------------------------------------------------------------------------------------------
+
+Installation:
+
+1. Shutdown your NS server
+
+    Server hosters with existing addon (AMXX, Metamod etc.) installations:
+    - If you cannot shutdown your server but only reboot it (rcon restart):
+      -> Disable addons in liblist.gam (google for howto)
+      -> Reboot the server
+    - Remove or move any existing AMXX or Metamod installations (addons-directory)
+
+2. Unzip this package to your "ns" directory
+
+3. Start your NS server and load up a map
+
+4. Check that ENSL-plugin is working:
+   - If you are in server console, type: "amxx plugins"
+   - If you are in player console, type: "rcon_password YOURPASSWORD; rcon amxx plugins"
+   It should show something similiar to below:
+ 
+ Currently loaded plugins:
+       name                    version  author            file             status   
+ [  1] ENSL                    1.3    jiriki            ENSL.amxx        running
+
+5. To load up ENSL official settings:
+   - If you are in server console, type: "amx_enslcfg"
+   - If you are in player console, type: "rcon_password YOURPASSWORD; rcon amx_enslcfg"
+
+6. To load up recommended PCW settings:
+   - If you are in server console, type: "amx_enslcfg pcw"
+   - If you are in player console, type: "rcon_password YOURPASSWORD; rcon amx_enslcfg pcw"
+
+--------------------------------------------------------------------------------------------
+============================================================================================
+--------------------------------------------------------------------------------------------
+
+Directory structure:
+
+|- addons		Addons
+ |- amxmodx		AmxModX root directory
+  |- configs		AmxModX configurations
+  |- dlls		AmxModX binaries
+  |- modules		AmxModX module binaries
+  |- plugins		AmxModX plugin binaries
+ |- metamod		Metamod root directory
+  |- dlls		Metamod binaries
+|- cfg			Example configuration files (not necessary)
+|- gfx			Graphics
+ |- vgui		GUI graphics - ENSL Icons
+|- maps			Maps - ENSL official maps
+|- sprites		Sprites
+ |- minimaps		Minimaps - ENSL official maps
+
+
+Files in the root directory:
+
+ENSL.txt            	This readme
+liblist.gam         	This file enables metamod
+
+--------------------------------------------------------------------------------------------
+============================================================================================
+--------------------------------------------------------------------------------------------
+
+Changelog:
+
+ >>> Version 1 
+  + Initial package
+ >>> Version 2
+  + ENSL-plugin added, server settings updated
+ >>> Version 3
+  + ENSL Plugin added, CALns.amxx removed
+ >>> Version 1.1
+  + New version numbering follows ENSL-plugin
+  + Added ns_orbital_anslv2
+  + Updated ENSL Plugin 1.1
+ >>> Version 1.1.1
+  + Added new icons
+  + Added updated ENSL Plugin
+  + Updated this file heavily
+  + Beta release
+ >>> Version 1.1.2
+  + Semi-public released included new ENSL Plugin
+ >>> Version 1.1.3
+  + ENSL Plugin updated:
+   + Added command: /mercs shows opponents' current mercenaries.
+   + Added command: /check check your own rates & variables. It warns for incorrect values.
+   + New restrictions:
+     rate: 10000 - 25000 cl_cmdrate: 50 - 150 cl_updaterate: 40 - 150 fps_max 50 - 300.
+     Changing any of these during official results in kick.
+   + ensl_checkrates 3 works now
+   + Inability to ready due incorrect team headcount -bug has now been fixed.
+   + Possible lagspike on playerjoin -bug has been fixed.
+   + Plugin is now less verbose, many messages have been cleaned up.
+   + Ratechecking has been tweaked and it doesn't spam you anymore.
+   + Referees can now enforce ensl nicks.
+   + /mercsok approves only the current mercs.
+   + Spamlimiting prints only one message.
+   + setinfo enslicon value for default icon is -1 instead of 0.
+ >>> Version 1.1.4
+   + Fixed authentication function
+   + Changed timelimit to 10mins
+   + Added ENSL combat mode
+ >>> Version 1.1.5
+  + New Icons (http://ensl.zanith.nl/images/instructions/icon-legend.jpg)
+  + ENSL Plugin updated:
+   + Few bugixes 
+    + Player name enforcing
+    + ENSL Data Fetch related bugfixes. Might fix issues when DB goes down
+     + Fixed a bug leaving unclosed sockets
+    + Numerous other bugifixes
+   + Help commands (amx_enslhelp amx_enslcvars) added
+   + Gag and server move commands added for referees
+   + Numerous code optimizations
+   + HLTV request support
+   + Added a method to fetch general info from ENSL DB
+ + Changed combattime back to 15mins
+ + Compiled with a year newer AMXX (1.8.1)
+ + Includes AMXX 1.8.1
+ + Player information printed after the game
+ + Specs can send message to game by prefixing their message with .
+ >>> Version 1.2
+ + Stripped icons to: admin, referee, donator and champion
+ + Added command /makeroom to kick specs
+ + Works with the new site (also file preloading from new address)
+ + Fixed forfeit clock bug
+ + Added waypoint fix by Asmodee (guard waypoint overflows)
+ + Added ns_ayumi_e_b5
+ >>> Version 1.3
+ + Jetpack remover for FPS > 125 (thanks Multivac)
+ + Waypoint remover (say /delwp) (thanks Asmodee)
+ + Floating gun fix (thanks Asmodee)
+ + ENSL member registration enforcement (ensl_membersonly)
+ + Rate checking cleanup, a bit faster
+ + Automatic Map reload
+ + Better /makeroom
+ + Spec talk without dot
+ + Random bug fixes
+ + Refactoring and obsolete code removing
+ + Something else (can't remember)
+
+--------------------------------------------------------------------------------------------
+============================================================================================
+--------------------------------------------------------------------------------------------
+
+Contact:
+
+ ENSL: http://www.ensl.org
+ Plugin: http://www.ensl.org/articles/426
+ IRC: #ensl @ irc.quakenet.org
+ Email: jiriki@derbian.fi

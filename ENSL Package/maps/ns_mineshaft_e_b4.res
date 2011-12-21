@@ -1,0 +1,6 @@
+maps/ns_mineshaft_e_b4.bsp
+sprites/minimaps/ns_mineshaft_e_b4.spr
+sprites/minimaps/ns_mineshaft_e_b4_1.spr
+sprites/minimaps/ns_mineshaft_e_b4_2.spr
+sprites/minimaps/ns_mineshaft_e_b4_3.spr
+sprites/minimaps/ns_mineshaft_e_b4_labelled.spr
