@@ -3200,8 +3200,8 @@ public func_init_co()
 	g_coBlocked[CO_ENSL] = {38, 39, 117, 126, 111, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 	// SGs vs Fades
-	g_coNum[CO_SGSFADES] = 22
-	g_coBlocked[CO_SGSFADES] = {65, 66, 61, 38, 39, 27, 53, 33, 126, 114, 115, 117, 101, 102, 103, 108, 109, 110, 111, 112, 21, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	g_coNum[CO_SGSFADES] = 21
+	g_coBlocked[CO_SGSFADES] = {65, 66, 38, 39, 27, 53, 33, 126, 114, 115, 117, 101, 102, 103, 108, 109, 110, 111, 112, 21, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 	// SGs vs Leap Skulks
 	g_coNum[CO_SGSKULKS] = 27
@@ -4569,6 +4569,3 @@ stock func_dec_to_hex(dec, hex[3])
 	hex[0] = (letter1 < 10) ? letter1+48 : letter1+55 
 	hex[1] = (letter2 < 10) ? letter2+48 : letter2+55
 }
-/* AMXX-Studio Notes - DO NOT MODIFY BELOW HERE
-*{\\ rtf1\\ ansi\\ deff0{\\ fonttbl{\\ f0\\ fnil Tahoma;}}\n\\ viewkind4\\ uc1\\ pard\\ lang1035\\ f0\\ fs16 \n\\ par }
-*/
