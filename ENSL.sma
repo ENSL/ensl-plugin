@@ -135,7 +135,7 @@
 // ENSL playerinfo
 #define E_URL "http://www.ensl.org/plugin/user/"		// Script URL (user query)
 #define E_MARK "#USER#"						// Mark for found HTTP line
-#define	E_NUM_LINES 10						// Number of data lines (ex. chal.)
+#define	E_NUM_LINES 11						// Number of data lines (ex. chal.)
 #define E_LEN_NICK 50						// Maximum length of username
 #define E_LEN_IP 15						// Maximum length of IP
 #define E_LEN_TEAM 50						// Maximum length of teamname
@@ -336,6 +336,7 @@ new g_userEnslId[U_NUM_IDS]					// List: PID <-> ENSL User ID
 new g_userEnslTid[U_NUM_IDS]					// List: PID <-> ENSL Team ID
 new g_userEnslLevel[U_NUM_IDS][E_LEN_LEVEL + 1]			// List: PID <-> ENSL Level
 new g_userEnslRank[U_NUM_IDS][E_LEN_RANK + 1]			// List: PID <-> ENSL Rank
+new g_userEnslGather[U_NUM_IDS]					// List: PID <-> ENSL Gather status
 new g_userCode[U_NUM_IDS][CC_LEN_CODE + 1]			// List: PID <-> Verification code
 new g_userSSPassed[U_NUM_IDS]					// List: PID <-> Deaths /wo snapshot
 new g_userSSCount[U_NUM_IDS]					// List: PID <-> Deaths /w snapshot
@@ -508,6 +509,7 @@ public plugin_init()
 	register_clcmd("say_team notready", "cmd_notready")
 	register_clcmd("say /clearwp", "cmd_clearwp");
 	register_clcmd("say_team /clearwp", "cmd_clearwp");
+	register_clcmd("say /noweapons", "func_cmd_stripweapons");
 	
 	// Console commands
 	register_concmd("amx_enslinfo", "cmd_enslinfo", ADMIN_USER, "[server/marines/aliens/others] (Print information)")
@@ -3224,6 +3226,13 @@ public evolve_lerk(id)
 	}
 }
 
+public func_cmd_stripweapons(id)
+{
+	strip_user_weapons(id);
+	ns_give_item(id, "weapon_knife");
+	return PLUGIN_HANDLED;
+}
+
 /**************************************************************************************
  * Extra user kicker, slot maker, widow maker, roommaker
  **************************************************************************************/
@@ -3742,6 +3751,7 @@ public func_authenticate(id)
 					g_userEnslId[i] = 0
 					g_userEnslTid[i] = 0
 					g_userEnslLevel[i] = "^0"
+					g_userEnslGather[i] = 0
 					g_userEnslRank[i] = "^0"
 					g_userCode[i] = "^0"
 					g_userSSPassed[i] = 0
@@ -3806,6 +3816,7 @@ public func_authenticate(id)
 			g_userEnslId[pid] = 0
 			g_userEnslTid[pid] = 0
 			g_userEnslLevel[pid] = "^0"
+			g_userEnslGather[pid] = 0
 			g_userEnslRank[pid] = "^0"
 		}
 		
@@ -4024,6 +4035,7 @@ public task_web_enslinfo(args[])
 	copy(g_userEnslLevel[pid], E_LEN_LEVEL, g_userWebData[pid][7])
 	copy(g_userEnslRank[pid], E_LEN_RANK, g_userWebData[pid][8])
 	g_userIconFlags[g_userIdIndex[pid]] = str_to_num(g_userWebData[pid][9])
+	g_userEnslGather[g_userIdIndex[pid]] = str_to_num(g_userWebData[pid][10])
 	g_userEnslInfo[pid] = 1
 	
 	// Enable icon
@@ -4187,19 +4199,13 @@ public cmd_clearwp(id)
 
 public func_check_membersonly(id, pid)
 {
-	if ( get_pcvar_num(g_cvar_membersonly) == 1 && g_userEnslId[pid] == 0 )
+	if ( get_pcvar_num(g_cvar_membersonly) == 1 && g_userEnslId[pid] == 0 && g_userEnslGather[pid] > 0 )
 	{
-		client_print(id, print_center, "^n^n^n^n^n^n Only registered ENSL members can play. ^n^n Plese register at www.ensl.org. ^n^n You can spectate without registering!")
+		client_print(id, print_center, "^n^n^n^n^n^n Only registered ENSL members who are in THIS gather can play. ^n^n Plese register at www.ensl.org. ^n^n ..and join at www.ensl.org/gather")
 		return 0
 	}
 	return 1
 }
-
-/**************************************************************************************
- * Gather functions
- **************************************************************************************/
-
-// TBA
  
 /**************************************************************************************
  * Floating gun fix
