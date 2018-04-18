@@ -2,6 +2,8 @@
 PROJECT  ?= ensl-plugin
 TAG      ?= latest
 
+.PHONY: all test clean build
+
 ifdef REGISTRY
   IMAGE=$(REGISTRY)/$(PROJECT):$(TAG)
 else
@@ -15,10 +17,11 @@ all:
 	@echo "  * push  - push $(IMAGE)"
 	@echo "  * test  - build and test $(IMAGE)"
 
-build: Dockerfile
+build:
 	docker build . -t $(IMAGE)
 
 run: build
+	mkdir -p build
 	docker run -v $(shell pwd)/build/:/var/build -ti $(IMAGE)
 
 pull:
