@@ -9,7 +9,9 @@ RUN useradd -m amxx && mkdir -p /var/build && chown -R amxx:amxx /var/build
 USER amxx
 WORKDIR /home/amxx
 RUN wget -q -O amxx.tgz "https://www.amxmodx.org/release/amxmodx-1.8.2-base-linux.tar.gz" && \
-    wget -q -O amxx_ns.tgz "https://www.amxmodx.org/release/amxmodx-1.8.2-ns-linux.tar.gz"
+    wget -q -O amxx_ns.tgz "https://www.amxmodx.org/release/amxmodx-1.8.2-ns-linux.tar.gz" && \
+    wget -q -O amxx_ns.tgz "https://www.amxmodx.org/release/amxmodx-1.8.2-ns-linux.tar.gz" && \
+    wget -q -O amxx_ns.tgz "https://www.amxmodx.org/release/amxmodx-1.8.2-ns-linux.tar.gz" && \
 
 COPY files/amxmodx.sha /home/amxx
 RUN sha256sum -c amxmodx.sha
