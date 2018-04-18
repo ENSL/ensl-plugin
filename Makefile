@@ -1,11 +1,11 @@
-REGISTRY ?= ensl
+#REGISTRY ?= ensl
 PROJECT  ?= ensl-plugin
 TAG      ?= latest
 
 ifdef REGISTRY
   IMAGE=$(REGISTRY)/$(PROJECT):$(TAG)
 else
-  IMAGE=$(PROJECT):$(TAG)
+  IMAGE=$(PROJECT)
 endif
 
 all:
@@ -16,7 +16,7 @@ all:
 	@echo "  * test  - build and test $(IMAGE)"
 
 build: Dockerfile
-	docker build -t $(IMAGE) .
+	docker build . -t $(IMAGE)
 
 run: build
 	docker run -v $(shell pwd)/build/:/var/build -ti $(IMAGE)
@@ -28,7 +28,7 @@ push:
 	docker push $(IMAGE)
 
 clean:
-	rm -f $(shell pwd)/build/*
+	rm -rf $(shell pwd)/build/*
 
 test: build
 	@echo "TODO"
