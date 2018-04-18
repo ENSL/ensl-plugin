@@ -29,6 +29,8 @@ push:
 
 clean:
 	rm -rf $(shell pwd)/build/*
+	docker ps -a | awk '{ print $$1,$$2 }' | grep $(IMAGE) |awk '{print $$1 }' |xargs -I {} docker rm {}
+	docker images -a |grep $(IMAGE) |awk '{print $$3}' |xargs -I {} docker rmi {}
 
 test: build
 	@echo "TODO"
