@@ -28,7 +28,7 @@ COPY src/ensl.sh /home/amxx/
 COPY src/*.sma /home/amxx/addons/amxmodx/scripting/
 COPY src/include/*  /home/amxx/addons/amxmodx/scripting/include
 COPY pkg /var/pkg
-RUN chown -R /home/amxx
+RUN chown -R amxx /home/amxx
 
 
 # RUN ./amxxpc ENSL.sma && cp ENSL.sma /var/build
