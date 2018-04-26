@@ -20,10 +20,16 @@ RUN tar -zxf amxx.tgz && tar -zxf amxx_ns.tgz
 
 WORKDIR /home/amxx/addons/amxmodx/scripting
 
-COPY --chown=amxx src/ensl.sh /home/amxx/
-COPY --chown=amxx src/*.sma /home/amxx/addons/amxmodx/scripting/
-COPY --chown=amxx src/include/*  /home/amxx/addons/amxmodx/scripting/include
-COPY --chown=amxx pkg /var/pkg
+#COPY --chown=amxx src/ensl.sh /home/amxx/
+#COPY --chown=amxx src/*.sma /home/amxx/addons/amxmodx/scripting/
+#COPY --chown=amxx src/include/*  /home/amxx/addons/amxmodx/scripting/include
+#COPY --chown=amxx pkg /var/pkg
+COPY src/ensl.sh /home/amxx/
+COPY src/*.sma /home/amxx/addons/amxmodx/scripting/
+COPY src/include/*  /home/amxx/addons/amxmodx/scripting/include
+COPY pkg /var/pkg
+RUN chown -R /home/amxx
+
 
 # RUN ./amxxpc ENSL.sma && cp ENSL.sma /var/build
 
