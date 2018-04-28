@@ -408,6 +408,7 @@ new g_cvar_speclimit
 new g_cvar_refaccess
 new g_cvar_combatmode
 new g_cvar_membersonly
+new g_cvar_webquery
 
 new const g_cvarHelp[H_NUM_CVARS][HL_LEN_MSG + 1] =
 {
@@ -464,6 +465,7 @@ public plugin_init()
 	g_cvar_refaccess = register_cvar("ensl_refaccess", "1")
 	g_cvar_combatmode = register_cvar("ensl_combatmode", "1")
 	g_cvar_membersonly = register_cvar("ensl_membersonly", "0")
+	g_cvar_webquery = register_cvar("ensl_webquery", "0")
 	
 	// Register basic events
 	register_event("DeathMsg", "event_death", "a")
@@ -1464,8 +1466,12 @@ public cmd_adminrequest(id, msg[HL_LEN_SAY + 1])
 // Task: Send admin request
 public task_web_areq(url[W_LEN_URL + 1])
 {
-	func_write_web(g_webSocket[W_I_AREQ], url)
-	socket_close(g_webSocket[W_I_AREQ])
+	new webquery = get_pcvar_num(g_cvar_webquery)
+	if ( webquery != 0 )
+	{
+		func_write_web(g_webSocket[W_I_AREQ], url)
+		socket_close(g_webSocket[W_I_AREQ])
+	}
 }
 
  
@@ -1650,8 +1656,12 @@ public cmd_enslkick(id, level, cid)
 // Task: Send ban query
 public task_web_ban(url[W_LEN_URL + 1])
 {
-	func_write_web(g_webSocket[W_I_BAN], url)
-	socket_close(g_webSocket[W_I_BAN])
+	new webquery = get_pcvar_num(g_cvar_webquery)
+	if ( webquery != 0 )
+	{
+		func_write_web(g_webSocket[W_I_BAN], url)
+		socket_close(g_webSocket[W_I_BAN])
+	}
 }
 
 // Function: enforce real nicks
@@ -1786,9 +1796,13 @@ public cmd_enslmove(id, level, cid)
 	{
 		new url[W_LEN_URL + 1], readargs[1]; readargs[0] = id
 		formatex(url, W_LEN_URL, "%smove?addr=%s&newaddr=%s&newpwd=%s", HT_URL, addr, newaddr, pwd)
-		func_write_web(g_webSocket[W_I_HLTV], url)
-		set_task(0.5, "task_web_hltv_send", 0, url, W_LEN_URL)
-		set_task(1.0, "task_web_hltv", T_HLTV, readargs, 1)
+		new webquery = get_pcvar_num(g_cvar_webquery)
+		if ( webquery != 0 )
+		{
+			func_write_web(g_webSocket[W_I_HLTV], url)
+			set_task(0.5, "task_web_hltv_send", 0, url, W_LEN_URL)
+			set_task(1.0, "task_web_hltv", T_HLTV, readargs, 1)
+		}
 	}
 	
 	return PLUGIN_HANDLED
@@ -3889,8 +3903,12 @@ public func_get_esi()
 	new url[W_LEN_URL + 1]; formatex(url, W_LEN_URL, "%s?ch=%s", S_URL, g_webHex[W_I_ESI])
 	
 	// Write web and start the reading function
-	func_write_web(g_webSocket[W_I_ESI], url)
-	set_task(0.5, "task_web_esi", T_ESI)
+	new webquery = get_pcvar_num(g_cvar_webquery)
+	if ( webquery != 0 )
+	{
+		func_write_web(g_webSocket[W_I_ESI], url)
+		set_task(0.5, "task_web_esi", T_ESI)
+	}
 	
 	return PLUGIN_CONTINUE
 }
@@ -3954,7 +3972,12 @@ public func_get_enslinfo(pid)
 	
 	// Set task for data send
 	new args[1]; args[0] = pid
-	set_task(0.1, "task_send_enslinfo", T_USER + pid, args, 1)
+	new webquery = get_pcvar_num(g_cvar_webquery)
+
+	if ( webquery != 0 )
+	{	
+		set_task(0.1, "task_send_enslinfo", T_USER + pid, args, 1)
+	}
 }
 
 // Task: Open and send socket data to ENSL DB
