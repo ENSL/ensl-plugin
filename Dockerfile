@@ -31,7 +31,7 @@ COPY files/amxmodx.sha /home/amxx/base/
 # Extract all package 
 RUN yes|unzip -o amxx.zip && \
     yes|unzip -o amxx_ns.zip && \
-    yes|unzip -uo mm.zip && \
+    yes|unzip -o mm.zip && \
     tar -zxf amxx.tgz && \
     tar -zxf amxx_ns.tgz
 
@@ -40,7 +40,9 @@ COPY src/*.sma /home/amxx/build/base/addons/amxmodx/scripting/
 COPY src/include/*  /home/amxx/build/base/addons/amxmodx/scripting/include
 
 WORKDIR /home/amxx/build/base/addons/amxmodx/scripting
-RUN ./amxxpc ENSL.sma && cp ENSL.amxx /home/amxx/build
+RUN ./amxxpc ENSL.sma && cp ENSL.amxx /home/amxx/build && \
+    ./amxxpc extralevels3.sma && \
+    ./amxxpc hiveccstatus.sma
 
 WORKDIR /home/amxx/build
 
