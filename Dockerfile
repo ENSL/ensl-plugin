@@ -39,26 +39,25 @@ RUN yes|unzip -o amxx.zip && \
 COPY src/*.sma /home/amxx/build/base/addons/amxmodx/scripting/
 COPY src/include/*  /home/amxx/build/base/addons/amxmodx/scripting/include
 
-#USER root
-#RUN chown -R amxx:amxx /home/amxx /var/build
-#USER amxx
-
 WORKDIR /home/amxx/build/base/addons/amxmodx/scripting
 RUN ./amxxpc ENSL.sma && cp ENSL.amxx /home/amxx/build
 
-# RUN cp -ra /var/pkg/* /var/build/pkg
 WORKDIR /home/amxx/build
 
 # Then just copy the files we need. No extra.
-# RUN cp -ra base/addons/metamod pkg/addons/metamod
-RUN mkdir -p pkg/addons/amxmodx/plugins && cp ENSL.amxx pkg/addons/amxmodx/plugins/
-RUN cp -ra base/addons/amxmodx/modules pkg/addons/amxmodx/ && \
+RUN mkdir -p pkg/addons/amxmodx && \
+    cp -ra base/addons/metamod pkg/addons/metamod && \
+    cp -ra base/addons/amxmodx/modules pkg/addons/amxmodx/ && \
+    cp -ra base/addons/amxmodx/plugins pkg/addons/amxmodx/ && \
     cp -ra base/addons/amxmodx/data pkg/addons/amxmodx/ && \
-    cp -ra base/addons/amxmodx/dlls pkg/addons/amxmodx/
+    cp -ra base/addons/amxmodx/dlls pkg/addons/amxmodx/ && \
+    cp -ra base/addons/amxmodx/configs pkg/addons/amxmodx/
 
+# Copy ENSL to its place, add overlay files and zip the whole thing
+RUN cp ENSL.amxx pkg/addons/amxmodx/plugins/
 ADD pkg /home/amxx/build/pkg
 
-RUN zip -r ENSL_SrvPkg.zip *
+RUN cd pkg && zip -9 -r ENSL_SrvPkg.zip * && mv ENSL_SrvPkg.zip ..
 
 COPY build.sh /home/amxx/
 
