@@ -40,15 +40,17 @@ COPY src/*.sma /home/amxx/build/base/addons/amxmodx/scripting/
 COPY src/include/*  /home/amxx/build/base/addons/amxmodx/scripting/include
 
 WORKDIR /home/amxx/build/base/addons/amxmodx/scripting
-RUN ./amxxpc ENSL.sma && cp ENSL.amxx /home/amxx/build && \
+RUN mkdir -p /home/amxx/build/base/addons/amxmodx/plugins && \
+    ./amxxpc ENSL.sma && \
     ./amxxpc extralevels3.sma && \
-    ./amxxpc hiveccstatus.sma
+    ./amxxpc hiveccstatus.sma && \
+    cp *.amxx /home/amxx/build/base/addons/amxmodx/plugins/ && \
+    cp *.amxx /home/amxx/build
 
 WORKDIR /home/amxx/build
 
 # Then just copy the files we need. No extra.
-RUN mkdir -p pkg/addons/amxmodx && \
-    cp -ra base/addons/metamod pkg/addons/metamod && \
+RUN cp -ra base/addons/metamod pkg/addons/ && \
     cp -ra base/addons/amxmodx/modules pkg/addons/amxmodx/ && \
     cp -ra base/addons/amxmodx/plugins pkg/addons/amxmodx/ && \
     cp -ra base/addons/amxmodx/data pkg/addons/amxmodx/ && \
