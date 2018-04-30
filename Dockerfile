@@ -40,7 +40,9 @@ COPY src/*.sma /home/amxx/build/base/addons/amxmodx/scripting/
 COPY src/include/*  /home/amxx/build/base/addons/amxmodx/scripting/include
 
 WORKDIR /home/amxx/build/base/addons/amxmodx/scripting
-RUN mkdir -p /home/amxx/build/base/addons/amxmodx/plugins && \
+
+RUN mkdir -p /home/amxx/build/pkg/addons/amxmodx/plugins && \
+    mkdir -p /home/amxx/build/pkg/addons/amxmodx/modules && \
     ./amxxpc ENSL.sma && \
     ./amxxpc extralevels3.sma && \
     ./amxxpc hiveccstatus.sma && \
@@ -50,12 +52,12 @@ RUN mkdir -p /home/amxx/build/base/addons/amxmodx/plugins && \
 WORKDIR /home/amxx/build
 
 # Then just copy the files we need. No extra.
-RUN cp -ra base/addons/metamod pkg/addons/ && \
-    cp -ra base/addons/amxmodx/modules pkg/addons/amxmodx/ && \
-    cp -ra base/addons/amxmodx/plugins pkg/addons/amxmodx/ && \
-    cp -ra base/addons/amxmodx/data pkg/addons/amxmodx/ && \
-    cp -ra base/addons/amxmodx/dlls pkg/addons/amxmodx/ && \
-    cp -ra base/addons/amxmodx/configs pkg/addons/amxmodx/
+RUN cp -rav base/addons/metamod pkg/addons/ && \
+    cp -rav base/addons/amxmodx/modules pkg/addons/amxmodx/ && \
+    cp -rav base/addons/amxmodx/plugins pkg/addons/amxmodx/ && \
+    cp -rav base/addons/amxmodx/data pkg/addons/amxmodx/ && \
+    cp -rav base/addons/amxmodx/dlls pkg/addons/amxmodx/ && \
+    cp -rav base/addons/amxmodx/configs pkg/addons/amxmodx/
 
 # Copy ENSL to its place, add overlay files and zip the whole thing
 RUN cp ENSL.amxx pkg/addons/amxmodx/plugins/
