@@ -38,7 +38,7 @@
 
 // Basic constants
 #define PLUGIN "ENSL"	
-#define VERSION "1.3-b3"
+#define VERSION "1.4"
 #define AUTHOR "jiriki"
 #define	WEB "www.ensl.org"
 #define CHANNEL "#ENSL"
@@ -454,7 +454,7 @@ public plugin_init()
 	g_cvar_minupdaterate = register_cvar("ensl_minupdaterate", "40")
 	g_cvar_maxupdaterate = register_cvar("ensl_maxupdaterate", "150")
 	g_cvar_minfps = register_cvar("ensl_minfps", "50")
-	g_cvar_maxfps = register_cvar("ensl_maxfps", "125")
+	g_cvar_maxfps = register_cvar("ensl_maxfps", "999")
 	g_cvar_checkids = register_cvar("ensl_checkids", "1")
 	g_cvar_checkrates = register_cvar("ensl_checkrates", "3")
 	g_cvar_snapshots = register_cvar("ensl_snapshots", "0")
@@ -2282,7 +2282,7 @@ public func_init_cvars()
 	func_add_int_cvar("ensl_minupdaterate", 40)
 	func_add_int_cvar("ensl_maxupdaterate", 150)
 	func_add_int_cvar("ensl_minfps", 50)
-	func_add_int_cvar("ensl_maxfps", 125)
+	func_add_int_cvar("ensl_maxfps", 999)
 	func_add_int_cvar("ensl_snapshots", 1, 0)
 	func_add_int_cvar("ensl_checkids", 1, 1)
 	func_add_int_cvar("ensl_checkrates", 1, RC_ENABLED_FETCH)
@@ -3407,7 +3407,7 @@ public func_check_rate(id, const cvar[], const value[], const args[])
 			
 			// TODO: check marine team
 			// Remove jetpack
-			if ( 125 < str_to_num(value) &&  pev(id, pev_team) == 1 && is_user_alive(id) )
+			if ( tMax < str_to_num(value) &&  pev(id, pev_team) == 1 && is_user_alive(id) && tMax != 0 )
 			{
 				ns_set_mask(id, MASK_JETPACK, 0)
 			}
