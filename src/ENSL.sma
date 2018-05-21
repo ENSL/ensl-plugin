@@ -874,7 +874,7 @@ public task_advert()
 	
 	// Print the hud message including serverside info (nick, ip etc.) + gametimes
 	set_hudmessage(20, 120, 120, -1.0, 0.6, 0, 0.5, 10.0, 2.0, 2.0, 4)
-	formatex(msg, HL_LEN_HUDMESSAGE, "Welcome to ENSL Server^n^n^nYou can join pick-up games^nby registering at www.ensl.org^nand joining at www.ensl.org/gather")
+	formatex(msg, HL_LEN_HUDMESSAGE, "Welcome to ENSL Server^n^n^nYou can join pick-up games^nby registering at www.ensl.org^nand joining at www.ensl.org/gathers/latest/ns1")
 	
 	// Check readyroom first
 	for ( new i = 0; i < playerCount; i++ )
