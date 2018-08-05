@@ -1,0 +1,1 @@
+sprites/minimaps/ns_ragnarok_b3.spr
