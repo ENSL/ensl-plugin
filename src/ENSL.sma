@@ -1098,7 +1098,7 @@ public cmd_whois(id, msg[HL_LEN_SAY + 1])
 	new name[HL_LEN_NICK + 1]; get_user_name(targetID, name, HL_LEN_NICK)
 	
 	// Print nick and steamid
-	client_print(id, print_chat, "[ENSL] Nick: %s SteamID: %s IP: %s", name, g_userSteamID[tPid], g_userIP[tPid])
+	client_print(id, print_chat, "[ENSL] Nick: %s SteamID: %s", name, g_userSteamID[tPid])
 	
 	// Print possible ENSL information
 	if ( g_userEnslInfo[tPid] )
@@ -1382,9 +1382,9 @@ public func_print_player(id, pid)
 	// Insert values
 	add(values[0], 15, name, 15)
 	add(values[1], 15, g_userSteamID[pid], 15)
-	add(values[2], 15, g_userIP[pid], HL_LEN_IP)
+	add(values[2], 15, "0.0.0.0", HL_LEN_IP)
 	add(values[3], 15, g_userEnslNick[pid], 15)
-	add(values[4], 15, g_userEnslIP[pid], E_LEN_IP)
+	add(values[4], 15, "0.0.0.0", E_LEN_IP)
 	add(values[5], 15, g_userEnslTeam[pid], 15)
 	add(values[6], 15, g_userEnslLevel[pid], E_LEN_LEVEL)
 	add(values[7], 15, rates, 15)
