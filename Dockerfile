@@ -21,8 +21,8 @@ WORKDIR /home/amxx/build/base/
 RUN wget -q -O amxx.tgz "https://www.amxmodx.org/release/amxmodx-1.8.2-base-linux.tar.gz" && \
     wget -q -O amxx_ns.tgz "https://www.amxmodx.org/release/amxmodx-1.8.2-ns-linux.tar.gz" && \
     wget -q -O amxx.zip "https://www.amxmodx.org/release/amxmodx-1.8.2-base-windows.zip" && \
-    wget -q -O amxx_ns.zip "https://www.amxmodx.org/release/amxmodx-1.8.2-ns-windows.zip"
-RUN wget -q -O mm.zip "https://www.amxmodx.org/release/metamod-1.21.1-am.zip"
+    wget -q -O amxx_ns.zip "https://www.amxmodx.org/release/amxmodx-1.8.2-ns-windows.zip" && \
+    wget -q -O mm.zip "https://www.amxmodx.org/release/metamod-1.21.1-am.zip"
 
 COPY files/amxmodx.sha /home/amxx/base/
 # RUN sha256sum -c amxmodx.sha
@@ -68,4 +68,4 @@ RUN cd pkg && zip -9 -r ENSL_SrvPkg.zip * && mv ENSL_SrvPkg.zip ..
 COPY build.sh /home/amxx/
 
 USER root
-ENTRYPOINT ["/home/amxx/build.sh"]
+ENTRYPOINT ["/bin/bash", "/home/amxx/build.sh"]
