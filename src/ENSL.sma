@@ -38,7 +38,7 @@
 
 // Basic constants
 #define PLUGIN "ENSL"	
-#define VERSION "1.4"
+#define VERSION "1.5"
 #define AUTHOR "jiriki"
 #define	WEB "www.ensl.org"
 #define CHANNEL "#ENSL"
@@ -49,7 +49,7 @@
 #define A_LEN_CMDINFO 100					// Maximum length of command info
 
 // Global settings
-#define G_FREQ 5.0						// Global command delay
+#define G_FREQ 0.25						// Global command delay
 
 // User tracking
 #define U_NUM_IDS 32						// Maximum number of users to track
@@ -95,7 +95,7 @@
 #define H_NUM_CVARS 12						// Number of CVARs
 
 // ENSL query
-#define W_IP "78.46.36.107"					// Script IP
+#define W_IP "46.4.35.234"					// Script IP
 #define W_HOST "www.ensl.org"					// Script hostname
 #define W_PORT 80						// Script port
 #define W_TIMEOUT 1						// HTTP Timeout
@@ -423,7 +423,7 @@ new const g_cvarHelp[H_NUM_CVARS][HL_LEN_MSG + 1] =
 	"ensl_teamlimit [num]: Allows teams to play with only given number of players.",
 	"ensl_speclimit [0 = off, 1 = on]: Speclimiting prevents non-referees to join spectators mid-game.",
 	"ensl_refaccess [0 = off, 1 = on]: Toggles usage of admin commands by referees.",
-	"ensl_combatmode [0 = off, 1 = celeresupply, 2: ENSL-combat, 3: lifeforms]: Limits the usable combat upgrades."
+	"	 [0 = off, 1 = celeresupply, 2: ENSL-combat, 3: lifeforms]: Limits the usable combat upgrades."
 }
 
 	
@@ -463,7 +463,7 @@ public plugin_init()
 	g_cvar_teamlimit = register_cvar("ensl_teamlimit", "0")
 	g_cvar_speclimit = register_cvar("ensl_speclimit", "0")
 	g_cvar_refaccess = register_cvar("ensl_refaccess", "1")
-	g_cvar_combatmode = register_cvar("ensl_combatmode", "1")
+	g_cvar_combatmode = register_cvar("ensl_combatmode", "0")
 	g_cvar_membersonly = register_cvar("ensl_membersonly", "0")
 	g_cvar_webquery = register_cvar("ensl_webquery", "0")
 	
@@ -568,6 +568,7 @@ public plugin_init()
 public plugin_precache()
 {	
 	// Force certain unmodified files
+	/* OBSOLETE Not needed in 3.3 anymore
 	force_unmodified(force_exactfile,{0,0,0},{0,0,0},"/co_kestrel.wad")
 	force_unmodified(force_exactfile,{0,0,0},{0,0,0},"/hallwall_1.wad")
 	force_unmodified(force_exactfile,{0,0,0},{0,0,0},"/ns.wad")
@@ -584,6 +585,7 @@ public plugin_precache()
 	force_unmodified(force_exactfile,{0,0,0},{0,0,0},"/ns_shiva.wad")
 	force_unmodified(force_exactfile,{0,0,0},{0,0,0},"/ns_tanith.wad")
 	force_unmodified(force_exactfile,{0,0,0},{0,0,0},"/v_wad.wad")
+	*/
 	
 	// Initialize icons
 	func_init_icons()
@@ -4234,6 +4236,7 @@ public func_check_membersonly(id, pid)
  * Floating gun fix
  **************************************************************************************/
 
+/* OBSOLETE Remove because fixed in 3.3
 public func_msg_death()
 {
         new victim = get_msg_arg_int(2);
@@ -4264,6 +4267,7 @@ public func_fix_guns(id)
                 }
         }
 }
+*/
 
 
 /**************************************************************************************
