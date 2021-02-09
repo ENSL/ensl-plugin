@@ -41,7 +41,6 @@
 #define VERSION "1.5"
 #define AUTHOR "jiriki"
 #define	WEB "www.ensl.org"
-#define CHANNEL "#ENSL"
 #define PASSWORD "europe"
 
 // AMX constants
@@ -358,13 +357,17 @@ new g_FFCUsed = 0						// Forfeit clock: time used
 new g_cvarIntIndex = 0						// Server integer CVAR index
 new g_cvarIntName[C_NUM_INTS][C_LEN_NAME + 1]			// Server integer CVAR names
 new g_cvarIntLevel[C_NUM_INTS]					// Server integer CVAR importance
-new g_cvarIntValue[C_NUM_INTS]					// Server integer CVAR values
+new g_cvarIntOfficial[C_NUM_INTS]					// Server integer CVAR Official values
 new g_cvarIntPCW[C_NUM_INTS]					// Server integer CVAR PCW value
-new g_cvarFltIndex = 0						// Server float CVAR index
+new g_cvarIntGather[C_NUM_INTS]					// Server integer CVAR PCW value
+new g_cvarIntPublic[C_NUM_INTS]					// Server integer CVAR PCW value
+new g_cvarFltIndex = 0							// Server float CVAR index
 new g_cvarFltName[C_NUM_FLOATS][C_LEN_NAME + 1]			// Server float CVAR names
 new g_cvarFltLevel[C_NUM_FLOATS]				// Server float CVAR importance
-new Float:g_cvarFltValue[C_NUM_FLOATS]				// Server float CVAR values
+new Float:g_cvarFltOfficial[C_NUM_FLOATS]				// Server float CVAR official values
 new Float:g_cvarFltPCW[C_NUM_FLOATS]				// Server float CVAR PCW value
+new Float:g_cvarFltGather[C_NUM_FLOATS]				// Server float CVAR values
+new Float:g_cvarFltPublic[C_NUM_FLOATS]				// Server float CVAR values
 
 new g_coNum[CO_NUM_MODES]					// Combat: mode <-> numbr. of blocks
 new g_coBlocked[CO_NUM_MODES][CO_NUM_UPGRADES]			// Combat: mode <-> blocked impulses
@@ -423,7 +426,7 @@ new const g_cvarHelp[H_NUM_CVARS][HL_LEN_MSG + 1] =
 	"ensl_teamlimit [num]: Allows teams to play with only given number of players.",
 	"ensl_speclimit [0 = off, 1 = on]: Speclimiting prevents non-referees to join spectators mid-game.",
 	"ensl_refaccess [0 = off, 1 = on]: Toggles usage of admin commands by referees.",
-	"	 [0 = off, 1 = celeresupply, 2: ENSL-combat, 3: lifeforms]: Limits the usable combat upgrades."
+	"ensl_combatmode [0 = off, 1 = celeresupply, 2: ENSL-combat, 3: lifeforms]: Limits the usable combat upgrades."
 }
 
 	
@@ -1067,7 +1070,7 @@ public cmd_ensl(id)
 	}
 	
 	// Print verison and settings
-	client_print(id, print_chat, "[ENSL] Plugin Version %s - %s - %s on IRC.Quakenet.Org", VERSION, WEB, CHANNEL)
+	client_print(id, print_chat, "[ENSL] Plugin Version %s - %s", VERSION, WEB)
 	
 	return PLUGIN_HANDLED
 }
@@ -1197,7 +1200,7 @@ public func_print_server(id)
 	for ( new i = 0; i < C_NUM_INTS; i++ )
 	{
 		// If an incorrect settings is found..
-		if ( get_cvar_num(g_cvarIntName[i]) != g_cvarIntValue[i] )
+		if ( get_cvar_num(g_cvarIntName[i]) != g_cvarIntOfficial[i] )
 		{						
 			// Advance the mandatory cvar violation counter
 			if ( g_cvarIntLevel[i] == C_LEVEL_MANDATORY )
@@ -1220,7 +1223,7 @@ public func_print_server(id)
 	for ( new i = 0; i < C_NUM_FLOATS; i++ )
 	{
 		// If an incorrect settings is found, record it and increase index + counter
-		if ( get_cvar_float(g_cvarFltName[i]) != g_cvarFltValue[i] )
+		if ( get_cvar_float(g_cvarFltName[i]) != g_cvarFltOfficial[i] )
 		{			
 			// Advance the mandatory cvar violation counter
 			if ( g_cvarFltLevel[i] == C_LEVEL_MANDATORY )
@@ -1251,7 +1254,7 @@ public func_print_server(id)
 			
 			if ( g_cvarIntLevel[idx] == C_LEVEL_MANDATORY )
 			{
-				console_print(id, "%s = %d (should be %d)", g_cvarIntName[idx], get_cvar_num(g_cvarIntName[idx]), g_cvarIntValue[idx])
+				console_print(id, "%s = %d (should be %d)", g_cvarIntName[idx], get_cvar_num(g_cvarIntName[idx]), g_cvarIntOfficial[idx])
 			}
 		}
 		
@@ -1262,7 +1265,7 @@ public func_print_server(id)
 			
 			if ( g_cvarFltLevel[idx] == C_LEVEL_MANDATORY )
 			{
-				console_print(id, "%s = %f (should be %f)", g_cvarFltName[idx], get_cvar_float(g_cvarFltName[idx]), g_cvarFltValue[idx])
+				console_print(id, "%s = %f (should be %f)", g_cvarFltName[idx], get_cvar_float(g_cvarFltName[idx]), g_cvarFltOfficial[idx])
 			}
 		}
 	}
@@ -1279,7 +1282,7 @@ public func_print_server(id)
 			
 			if ( g_cvarIntLevel[idx] == C_LEVEL_VOLUNTARY )
 			{
-				console_print(id, "%s = %d (should be %d)", g_cvarIntName[idx], get_cvar_num(g_cvarIntName[idx]), g_cvarIntValue[idx])
+				console_print(id, "%s = %d (should be %d)", g_cvarIntName[idx], get_cvar_num(g_cvarIntName[idx]), g_cvarIntOfficial[idx])
 			}
 		}
 		
@@ -1290,7 +1293,7 @@ public func_print_server(id)
 			
 			if ( g_cvarFltLevel[idx] == C_LEVEL_VOLUNTARY )
 			{
-				console_print(id, "%s = %f (should be %f)", g_cvarFltName[idx], get_cvar_float(g_cvarFltName[idx]), g_cvarFltValue[idx])
+				console_print(id, "%s = %f (should be %f)", g_cvarFltName[idx], get_cvar_float(g_cvarFltName[idx]), g_cvarFltOfficial[idx])
 			}
 		}
 	}
@@ -2254,10 +2257,10 @@ public cmd_enslvoice(id, level, cid)
 // Function: initialize server CVARs
 public func_init_cvars()
 {
-	// Integers
+	// Integers; arguments: cvar name, official value, pcw value, gather value
 	func_add_int_cvar("mp_blockscripts", 0)
-	func_add_int_cvar("mp_consistency", 1)
-	func_add_int_cvar("mp_combattime", 15)
+	func_add_int_cvar("mp_consistency", 2)
+	func_add_int_cvar("mp_combattime", 15, 20, 35)
 	func_add_int_cvar("mp_drawdamage", 0)
 	func_add_int_cvar("mp_falldamage", 1)
 	func_add_int_cvar("mp_flashlight", 1)
@@ -2287,7 +2290,7 @@ public func_init_cvars()
 	func_add_int_cvar("ensl_maxfps", 999)
 	func_add_int_cvar("ensl_snapshots", 1, 0)
 	func_add_int_cvar("ensl_checkids", 1, 1)
-	func_add_int_cvar("ensl_checkrates", 1, RC_ENABLED_FETCH)
+	func_add_int_cvar("ensl_checkrates", 1, RC_ENABLED_FETCH, RC_ENABLED_FETCH)
 	func_add_int_cvar("ensl_ffclock", 1, 0)
 	func_add_int_cvar("ensl_merclimit", 1, 0)
 	func_add_int_cvar("ensl_teamlimit", 6, 0)
@@ -2314,24 +2317,66 @@ public cmd_enslcfg(id, level, cid)
 	}
 	
 	// If it is pcw mode, run pcw mode settings
-	new mode[4]; read_argv(1, mode, 3); new pcw = equal(mode, "pcw")
+	new mode[4]; read_argv(1, mode, 3)
+	new pcw = equal(mode, "pcw")
+	new gather = equal(mode, "gather")
+	new publik = equal(mode, "public")
 	
 	// Set Server ENSL Cvars, integers
+	// TODO: better structure
 	for ( new i = 0; i < C_NUM_INTS; i++ )
 	{
-		set_cvar_num(g_cvarIntName[i], pcw ? g_cvarIntPCW[i] : g_cvarIntValue[i])
+		if ( pcw )
+		{
+			set_cvar_num(g_cvarIntName[i], g_cvarIntPCW[i])
+		}
+		else if ( gather )
+		{
+			set_cvar_num(g_cvarIntName[i], g_cvarIntGather[i])
+		}
+		else if ( publik )
+		{
+			set_cvar_num(g_cvarIntName[i], g_cvarIntPublic[i])
+		}
+		else
+		{
+			set_cvar_num(g_cvarIntName[i], g_cvarIntOfficial[i])
+		}
 	}
 	
 	// Set Server ENSL Cvars, floats
 	for ( new i = 0; i < C_NUM_FLOATS; i++ )
 	{
-		set_cvar_float(g_cvarFltName[i], pcw ? g_cvarFltPCW[i] : g_cvarFltValue[i])
+		if ( pcw )
+		{
+			set_cvar_float(g_cvarFltName[i], g_cvarFltPCW[i])
+		}
+		else if ( gather )
+		{
+			set_cvar_float(g_cvarFltName[i], g_cvarFltGather[i])
+		}
+		else if ( publik )
+		{
+			set_cvar_float(g_cvarFltName[i], g_cvarFltPublic[i])
+		}
+		else
+		{
+			set_cvar_float(g_cvarFltName[i], g_cvarFltOfficial[i])
+		}
 	}
 		
 	// Log and announce the event
 	if ( pcw )
 	{
-		client_print(0, print_chat, "[ENSL] Version %s PCW Settings Loaded", VERSION)
+		client_print(0, print_chat, "[ENSL] Version %s PCW (Practice Clan War) Settings Loaded", VERSION)
+	}
+	else if ( gather )
+	{
+		client_print(0, print_chat, "[ENSL] Version %s Gather Settings Loaded", VERSION)
+	}
+	else if ( publik )
+	{
+		client_print(0, print_chat, "[ENSL] Version %s Public Settings Loaded", VERSION)
 	}
 	else
 	{
@@ -2402,7 +2447,7 @@ public cmd_enslcvar(id, level, cid)
 }
 
 // Function: add integer cvar
-stock func_add_int_cvar(name[C_LEN_NAME + 1], value = 0,  pcw = -1, level = C_LEVEL_MANDATORY)
+stock func_add_int_cvar(name[C_LEN_NAME + 1], official = 0,  pcw = -1, gather = -1, publik = -1, level = C_LEVEL_MANDATORY)
 {
 	// Don't add over borders
 	if ( g_cvarIntIndex == sizeof(g_cvarIntName) )
@@ -2411,8 +2456,10 @@ stock func_add_int_cvar(name[C_LEN_NAME + 1], value = 0,  pcw = -1, level = C_LE
 	}
 	
 	g_cvarIntName[g_cvarIntIndex] = name
-	g_cvarIntValue[g_cvarIntIndex] = value
-	g_cvarIntPCW[g_cvarIntIndex] = pcw != -1 ? pcw : value
+	g_cvarIntOfficial[g_cvarIntIndex] = official
+	g_cvarIntPCW[g_cvarIntIndex] = pcw != -1 ? pcw : official
+	g_cvarIntGather[g_cvarIntIndex] = gather != -1 ? gather : official
+	g_cvarIntPublic[g_cvarIntIndex] = publik != -1 ? publik : official
 	g_cvarIntLevel[g_cvarIntIndex] = level
 	g_cvarIntIndex++
 	
@@ -2420,7 +2467,7 @@ stock func_add_int_cvar(name[C_LEN_NAME + 1], value = 0,  pcw = -1, level = C_LE
 }
 
 // Function: add float cvar
-stock func_add_flt_cvar(name[C_LEN_NAME + 1], Float:value = 0.0,  Float:pcw = -1.0, level = C_LEVEL_MANDATORY)
+stock func_add_flt_cvar(name[C_LEN_NAME + 1], Float:official = 0.0,  Float:pcw = -1.0, Float:gather = -1.0, Float:publik = -1.0,  level = C_LEVEL_MANDATORY)
 {
 	// Don't add over borders
 	if ( g_cvarFltIndex == sizeof(g_cvarFltName) )
@@ -2429,9 +2476,11 @@ stock func_add_flt_cvar(name[C_LEN_NAME + 1], Float:value = 0.0,  Float:pcw = -1
 	}
 	
 	g_cvarFltName[g_cvarFltIndex] = name
-	g_cvarFltValue[g_cvarFltIndex] = value
-	g_cvarFltPCW[g_cvarFltIndex] = pcw != -1.0 ? pcw : value
-	g_cvarFltLevel[g_cvarFltIndex] = level
+	g_cvarFltOfficial[g_cvarFltIndex] = official
+	g_cvarFltPCW[g_cvarFltIndex] = pcw != -1.0 ? pcw : official
+	g_cvarFltGather[g_cvarFltIndex] = gather != -1.0 ? gather : official
+	g_cvarFltPublic[g_cvarFltIndex] = publik != -1.0 ? publik : official
+	g_cvarFltLevel[g_cvarFltIndex] = official
 	g_cvarFltIndex++
 	
 	return g_cvarFltIndex - 1
@@ -3204,6 +3253,9 @@ public func_init_co()
 	}
 	
 	register_event("WeapPickup", "evolve_lerk", "b", "1=6")
+
+	callback = 	
+	cvarhook:hook_cvar_change(pcvar, const callback[]);
 	
 	// Normal combat
 	g_coNum[CO_NORMAL] = 0
